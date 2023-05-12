@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "users",
+    "social_django",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -64,6 +65,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -131,8 +134,14 @@ LOGIN_REDIRECT_URL = "dashboard"
 
 EMAIL_HOST = "smtp.mailgun.org"
 EMAIL_PORT = 587
-# print("USER :", environ.get("EMAIL_HOST_USER"))
-# print("PASSWORD :", environ.get("EMAIL_HOST_PASSWORD"))
 EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.github.GithubOAuth2",
+]
+
+SOCIAL_AUTH_GITHUB_KEY = environ.get("SOCIAL_AUTH_GITHUB_KEY")
+SOCIAL_AUTH_GITHUB_SECRET = environ.get("SOCIAL_AUTH_GITHUB_SECRET")
